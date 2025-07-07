@@ -10,11 +10,11 @@ exec kmonad -l error /home/xcoder/.config/kmonad/kmonad.kbd&
 font pango:JetBrains Mono 12
 
 ### Variables
-#
+
 # Logo key. Use Mod1 for Alt.
 set $mod Ctrl
 # Home row direction keys, like vim
-set $left h
+set $left h 
 set $down j
 set $up k
 set $right l
