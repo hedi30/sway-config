@@ -4,8 +4,9 @@
 #
 # Read `man 5 sway` for a complete reference.
 
-exec gammastep -c ~/.config/gammastep/config.ini
-exec kmonad -l error /home/xcoder/.config/kmonad/kmonad.kbd&
+
+
+exec gammastep -c ~/.config/gammastep/config.ini&
 
 font pango:JetBrains Mono 12
 
@@ -24,10 +25,10 @@ set $term alacritty --config-file ~/.config/alacritty/alacritty.toml
 set $menu ~/.config/sway/run_bemenu.sh 
 
 ### Output configuration
-output * bg /home/xcoder/Images/wallhaven-jxm1mw.jpg fill
+output * bg /home/xcoder/Pictures/Arch Linux HD Wallpaper.png fill
 output eDP-1 scale 1
 output eDP-1 scale_filter nearest
-output eDP-1 subpixel rgb
+#output eDP-1 subpixel rgb
 
 
 #Disable laptop screen
@@ -208,25 +209,49 @@ bindsym Mod4+r mode "resize"
 # Utilities:
 #
     # Special keys to adjust volume via PulseAudio
-    bindsym --locked XF86AudioMute exec pactl set-sink-mute \@DEFAULT_SINK@ toggle
-    bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume \@DEFAULT_SINK@ -5%
-    bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume \@DEFAULT_SINK@ +5%
-    bindsym --locked XF86AudioMicMute exec pactl set-source-mute \@DEFAULT_SOURCE@ toggle
+    bindsym --locked XF86AudioMute exec ~/.local/bin/volume-control mute
+    bindsym --locked XF86AudioLowerVolume exec ~/.local/bin/volume-control down
+    bindsym --locked XF86AudioRaiseVolume exec ~/.local/bin/volume-control up
+    bindsym --locked XF86AudioMicMute exec ~/.local/bin/volume-control micmute
+
     # Special keys to adjust brightness via brightnessctl
     bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
     bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
     # Special key to take a screenshot with grim
     bindsym Print exec grim
+    bindsym XF86Display exec sh -c 'grim -g "$(slurp)" "$HOME/Pictures/screenshot-$(date +%Y-%m-%d-%H%M%S).png"' 
+
+
+# ========== Lock on suspend ==========
+set $lock swaylock -f -c 000000
+
+exec swayidle -w \
+    before-sleep 'loginctl lock-session $XDG_SESSION_ID' \
+    lock '$lock'
+
+
+
 
 #
 # Status Bar:
 #
 # Read `man 5 sway-bar` for more information about this section.
+
+
 bar {
+
+    # diable vertical scrolling
+    bindsym button4 nop
+    bindsym button5 nop
+    # diable horizontal scrolling
+    bindsym button6 nop
+    bindsym button7 nop
+
+
    position bottom
    font pango:JetBrains Mono 12
-   #status_command ~/.config/sway/scripts/sway_bar.sh
-   status_command ~/.config/sway/scripts/swaybar_status
+   status_command ~/.config/sway/scripts/sway_bar.sh
+   #status_command ~/.config/sway/scripts/swaybar_status
    colors {
         background #000000
         statusline #ffffff
@@ -239,10 +264,10 @@ bar {
     }
 }
 
-client.focused          #000000 #000000 #ffffff #ffffff #000000
-client.focused_inactive #000000 #000000 #888888 #888888 #000000
-client.unfocused        #000000 #000000 #888888 #888888 #000000
-client.urgent           #000000 #000000 #ff0000 #ffffff #000000
-client.placeholder      #000000 #000000 #ffffff #ffffff #000000
+client.focused          #000000 #000000 #ffffff #000000 #000000
+client.focused_inactive #000000 #000000 #888888 #000000 #000000
+client.unfocused        #000000 #000000 #888888 #000000 #000000
+client.urgent           #000000 #000000 #ff0000 #000000 #000000
+client.placeholder      #000000 #000000 #ffffff #000000 #000000
 
 include /etc/sway/config.d/*
